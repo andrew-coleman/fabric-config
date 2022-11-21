@@ -132,6 +132,11 @@ func (o *OrdererGroup) Configuration() (Orderer, error) {
 		if err != nil {
 			return Orderer{}, fmt.Errorf("unmarshaling etcd raft metadata: %v", err)
 		}
+	case orderer.ConsensusTypeSmartBFT:
+		etcdRaft, err = unmarshalEtcdRaftMetadata(consensusTypeProto.Metadata)
+		if err != nil {
+			return Orderer{}, fmt.Errorf("unmarshaling smart bft metadata: %v", err)
+		}
 	default:
 		return Orderer{}, fmt.Errorf("config contains unknown consensus type '%s'", consensusTypeProto.Type)
 	}
